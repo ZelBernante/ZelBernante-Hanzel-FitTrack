@@ -22,7 +22,7 @@ Deno.serve(async (req: Request) => {
       global: { headers: { Authorization: authHeader } },
       auth: { persistSession: false },
     });
-    const accessToken = authHeader.replace(/^Bearer\\s+/i, '');\n    const { data: { user }, error: authError } = await supabase.auth.getUser(accessToken);
+    const accessToken = authHeader.replace(/^Bearer\s+/i, '');\n    const { data: { user }, error: authError } = await supabase.auth.getUser(accessToken);
     if (authError || !user) return Response.json({ error: "Your session is invalid. Please sign in again." }, { status: 401, headers: corsHeaders });
 
     const body = await req.json();
