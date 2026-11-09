@@ -18,7 +18,7 @@ Deno.serve(async(req:Request)=>{
   if(body.action!=="create")return Response.json({error:"Unsupported action."},{status:400,headers:corsHeaders});
   const email=String(body.email||"").trim().toLowerCase(),username=String(body.username||"").trim().slice(0,40);
   if(!/^\S+@\S+\\.\S+$/.test(email)||!username)return Response.json({error:"Enter a valid email and username."},{status:400,headers:corsHeaders});
-  const {data:created,error:createError}=await admin.auth.admin.createUser({email,email_confirm:false,user_metadata:{username,display_name:username}});
+  const {data:created,error:createError}=await admin.auth.admin.createUser({email,password:crypto.randomUUID()+crypto.randomUUID(),email_confirm:false,user_metadata:{username,display_name:username}});
   if(createError||!created.user)return Response.json({error:createError?.message||"Could not create the account."},{status:400,headers:corsHeaders});
   const publicKey=req.headers.get("apikey")||Deno.env.get("SUPABASE_ANON_KEY")||Deno.env.get("SUPABASE_PUBLISHABLE_KEY");
   if(!publicKey){await admin.auth.admin.deleteUser(created.user.id);return Response.json({error:"Set SUPABASE_ANON_KEY or SUPABASE_PUBLISHABLE_KEY in Edge Function secrets."},{status:503,headers:corsHeaders})}
