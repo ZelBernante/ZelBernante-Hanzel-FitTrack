@@ -51,7 +51,7 @@
           <form id="workoutForm">
             <div class="workout-ai-input"><label for="workoutDescription">What did you do today?</label><textarea id="workoutDescription" rows="3" placeholder="Example: 3 sets of 12 bicep curls at 7.5 kg, 3 sets of 10 overhead presses at 5 kg, 3 sets of 12 push-ups, 3 planks for 30 seconds…"></textarea><small>Write your workout naturally. Gemini will separate exercises, sets, reps, weights and estimate calories for the whole session.</small></div>
             <div class="exercise-list-heading"><div><p class="eyebrow">YOUR USUAL WORKOUT · EDITABLE DEFAULTS</p><h3>Exercise reference</h3></div><span class="muted">Fill in any exercise rows you completed. These entries merge with your workout note; either source can be used alone.</span></div><div class="exercise-list" id="exerciseList"></div>
-            <div class="workout-metrics"><label><span class="metric-icon">◷</span>Workout duration<input type="number" id="workoutDuration" min="0" max="300" step="1" value="45" placeholder="Minutes"><small>Minutes spent training</small></label><label><span class="metric-icon">⌁</span>Steps taken<input type="number" id="workoutSteps" min="0" max="100000" step="100" placeholder="e.g. 8000"><small>Total steps for the day</small></label></div>
+            <div class="workout-metrics"><label><span class="metric-icon">◷</span>Workout duration<input type="number" id="workoutDuration" min="0" max="300" step="1" value="45" placeholder="Minutes"><small>Minutes spent training</small></label><label><span class="metric-icon">⌁</span>Steps taken<input type="number" id="workoutSteps" min="0" max="100000" step="1" placeholder="e.g. 8000"><small>Total steps for the day</small></label></div>
             <div class="calorie-estimate-panel"><div><span class="eyebrow">STRENGTH TRAINING</span><strong id="strengthCalories">Pending AI</strong></div><div><span class="eyebrow">WALKING FROM STEPS</span><strong id="stepsCalories">Pending AI</strong></div><div><span class="eyebrow">TOTAL ESTIMATED</span><strong id="totalActivityCalories">—</strong></div></div>
             <div id="workoutJournal" class="workout-journal" hidden></div><p class="ai-status" id="workoutAiStatus" role="status"></p>
             <div class="session-actions"><button class="secondary-button delete-session-button" type="button" id="deleteWorkout" hidden>Delete session</button><button class="primary-button" type="submit" id="analyzeWorkout">✦ Analyze &amp; save workout</button></div>
@@ -71,6 +71,6 @@
   </div>
   <div class="toast" id="toast" role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261109-gym-merge-2"></script>
+  <script src="app.js?v=20261109-gym-merge-3"></script>
 </body>
 </html>
