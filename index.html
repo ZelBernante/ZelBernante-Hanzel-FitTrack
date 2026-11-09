@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5ad35">
+  <title>Hanzel FitTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section class="auth-screen" id="authScreen" aria-labelledby="authTitle"><form class="auth-card" id="authForm"><div class="brand-mark auth-mark">H</div><p class="eyebrow">PERSONAL FITNESS CLOUD</p><h1 id="authTitle">Welcome to FitTrack</h1><p class="muted" id="authDescription">Sign in to access your food, workouts and progress on any device.</p><label>Email address<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required></label><label>Password<input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required></label><button class="primary-button auth-submit" id="authSubmit" type="submit">Sign in</button><button class="text-button auth-toggle" id="authToggle" type="button">New here? Create an account</button><p class="auth-message" id="authMessage" role="status"></p><small class="fine-print">Your account is secured by Supabase. Your fitness records are private to your account.</small></form></section><div class="app-shell" id="appShell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard"><span class="brand-mark">H</span><span>FIT<span class="brand-accent">TRACK</span><small>PERSONAL FITNESS</small></span></a>
+      <div class="profile-mini"><div class="avatar">HB</div><div><strong>Hanzel</strong><small>Fat loss · muscle retention</small></div></div>
+      <nav aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboard"><span>▦</span> Overview</button>
+        <button class="nav-link" data-page="food"><span>◉</span> Food tracker</button>
+        <button class="nav-link" data-page="workout"><span>↗</span> Gym tracker</button>
+        <button class="nav-link" data-page="progress"><span>⌁</span> Progress</button>
+        <button class="nav-link" data-page="settings"><span>⚙</span> Goals & settings</button>
+      </nav>
+      <div class="sidebar-note"><span class="dot"></span> <span id="syncStatus">Connecting to your private cloud…</span></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button><div><div class="eyebrow" id="todayLabel">YOUR FITNESS, YOUR PACE</div><h1 id="pageTitle">Overview</h1></div><div class="top-actions"><span class="date-chip" id="dateChip"></span><button class="icon-button" id="exportBtn" title="Export backup">⇩</button><button class="icon-button signout-button" id="signOutBtn" title="Sign out">↪</button></div></header>
+      <section class="page active" id="page-dashboard">
+        <div class="welcome-row"><div><p class="eyebrow">THE 85 KG PROJECT</p><h2>Small wins. <em>Every day.</em></h2><p class="muted">A practical dashboard for losing fat while keeping your strength.</p></div><div class="streak-card"><span>YOUR CURRENT WEIGHT</span><strong id="dashWeight">95.0 <small>kg</small></strong><small>Goal: <b id="dashGoal">85 kg</b></small></div></div>
+        <div class="stats-grid">
+          <article class="stat-card calorie-card"><div class="stat-top"><span>CALORIES</span><span class="stat-icon">◒</span></div><strong id="dashCalories">0 <small>/ 2,300</small></strong><div class="progress-track"><div class="progress-fill orange" id="calorieBar"></div></div><small id="calorieRemaining">2,300 kcal remaining</small></article>
+          <article class="stat-card"><div class="stat-top"><span>PROTEIN</span><span class="stat-icon green">●</span></div><strong id="dashProtein">0 <small>/ 180g</small></strong><div class="progress-track"><div class="progress-fill green-bg" id="proteinBar"></div></div><small id="proteinRemaining">180g to go</small></article>
+          <article class="stat-card"><div class="stat-top"><span>CARBS</span><span class="stat-icon blue">◆</span></div><strong id="dashCarbs">0 <small>/ 235g</small></strong><div class="progress-track"><div class="progress-fill blue-bg" id="carbsBar"></div></div><small>Daily carbohydrate target</small></article>
+          <article class="stat-card"><div class="stat-top"><span>FAT</span><span class="stat-icon purple">●</span></div><strong id="dashFat">0 <small>/ 71g</small></strong><div class="progress-track"><div class="progress-fill purple-bg" id="fatBar"></div></div><small>Daily fat target</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">TODAY</p><h3>Food summary</h3></div><button class="text-button" data-goto="food">Add food +</button></div><div id="dashFoodList" class="compact-list empty-state">No food logged yet. Add your first meal.</div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">TRAINING</p><h3>Today's workout</h3></div><button class="text-button" data-goto="workout">Open tracker →</button></div><div id="dashWorkout" class="workout-summary"><div class="workout-symbol">↗</div><div><strong>Ready when you are</strong><p class="muted">Log a session to track sets, reps and progress.</p></div></div></article>
+        </div>
+        <div class="tip-banner"><div class="tip-icon">✦</div><div><strong>Today's reminder</strong><p>Hit your protein target, train with good form, and keep the deficit sustainable. You don't need to skip rice or starve yourself to make progress.</p></div></div>
+      </section>
+      <section class="page" id="page-food">
+        <div class="section-intro"><div><p class="eyebrow">NUTRITION</p><h2>Food tracker</h2><p class="muted">Log meals and watch your calories and macros update automatically.</p></div><div class="date-control"><label for="foodDate">Log date</label><input type="date" id="foodDate"></div></div>
+        <div class="stats-grid compact-stats"><article class="stat-card"><span class="muted">Calories eaten</span><strong id="foodCalories">0 kcal</strong><small id="foodCalSub">of 2,300 kcal</small></article><article class="stat-card"><span class="muted">Protein</span><strong id="foodProtein">0 g</strong><small>Target 180 g</small></article><article class="stat-card"><span class="muted">Carbs</span><strong id="foodCarbs">0 g</strong><small>Target 235 g</small></article><article class="stat-card"><span class="muted">Fat</span><strong id="foodFat">0 g</strong><small>Target 71 g</small></article></div>
+        <div class="content-grid food-grid"><article class="panel"><div class="panel-heading"><div><p class="eyebrow">ADD TO YOUR DAY</p><h3>Log a food</h3></div></div>
+          <form id="foodForm" class="form-grid"><label class="full">Food name<input id="foodName" list="foodSuggestions" placeholder="e.g. Chicken breast" required><datalist id="foodSuggestions"></datalist></label><label>Calories (kcal)<input id="foodKcal" type="number" min="0" step="1" placeholder="0" required></label><label>Protein (g)<input id="foodP" type="number" min="0" step="0.1" placeholder="0" required></label><label>Carbs (g)<input id="foodC" type="number" min="0" step="0.1" placeholder="0" required></label><label>Fat (g)<input id="foodF" type="number" min="0" step="0.1" placeholder="0" required></label><label>Meal<select id="foodMeal"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack / Shake</option></select></label><label>Servings<input id="foodServings" type="number" min="0.1" step="0.1" value="1"></label><button class="primary-button full" type="submit">＋ Add food to log</button></form>
+          <div class="preset-area"><p class="eyebrow">QUICK ADD · ESTIMATES</p><div id="quickFoods" class="quick-foods"></div><p class="fine-print">Preset values are estimates. Check product labels and adjust portions for accuracy.</p></div>
+        </article><article class="panel"><div class="panel-heading"><div><p class="eyebrow">DAILY JOURNAL</p><h3>What you ate</h3></div><span class="count-pill" id="foodCount">0 items</span></div><div id="foodLog" class="food-log empty-state">Nothing logged for this date yet.</div></article></div>
+      </section>
+      <section class="page" id="page-workout">
+        <div class="section-intro"><div><p class="eyebrow">STRENGTH TRAINING</p><h2>Gym tracker</h2><p class="muted">A four-day upper/lower dumbbell plan built around your home setup.</p></div><div class="date-control"><label for="workoutDate">Session date</label><input type="date" id="workoutDate"></div></div>
+        <div class="split-grid" id="splitGrid"></div>
+        <article class="panel workout-panel"><div class="panel-heading"><div><p class="eyebrow">SESSION LOGGER</p><h3 id="sessionTitle">Choose a workout day</h3></div><span class="count-pill" id="setCount">0 sets logged</span></div><div id="exerciseList" class="exercise-list"><div class="empty-state">Select one of the four workout days above to start logging.</div></div><div class="session-actions"><button class="secondary-button" id="finishWorkout" disabled>Finish session</button></div></article>
+        <p class="fine-print safety-note">Use weights you can control with good form. Stop if you feel sharp pain. Increase reps or load gradually rather than rushing heavier weights.</p>
+      </section>
+      <section class="page" id="page-progress">
+        <div class="section-intro"><div><p class="eyebrow">THE BIG PICTURE</p><h2>Your progress</h2><p class="muted">Track body weight and see how consistently you're showing up.</p></div></div>
+        <div class="content-grid"><article class="panel"><div class="panel-heading"><div><p class="eyebrow">WEIGHT CHECK-IN</p><h3>Log your weight</h3></div></div><form id="weightForm" class="inline-form"><label>Date<input type="date" id="weightDate" required></label><label>Weight (kg)<input type="number" id="weightValue" min="30" max="300" step="0.1" placeholder="95.0" required></label><button class="primary-button" type="submit">Save weight</button></form><div class="weight-chart-wrap"><svg id="weightChart" viewBox="0 0 600 220" role="img" aria-label="Weight history chart"></svg></div><div id="weightHistory" class="history-list"></div></article><article class="panel"><div class="panel-heading"><div><p class="eyebrow">CONSISTENCY</p><h3>Training history</h3></div></div><div class="big-number" id="workoutTotal">0</div><p class="muted">completed sessions recorded</p><div class="divider"></div><div class="mini-metric"><span>Starting weight</span><strong>95.0 kg</strong></div><div class="mini-metric"><span>Goal weight</span><strong id="progressGoal">85.0 kg</strong></div><div class="mini-metric"><span>Change from start</span><strong id="weightChange">0.0 kg</strong></div></article></div>
+      </section>
+      <section class="page" id="page-settings">
+        <div class="section-intro"><div><p class="eyebrow">YOUR PLAN</p><h2>Goals & settings</h2><p class="muted">Adjust your targets as your weight, activity and training change.</p></div></div>
+        <div class="content-grid"><article class="panel"><div class="panel-heading"><div><p class="eyebrow">PROFILE & DAILY TARGETS</p><h3>Your numbers</h3></div></div><form id="settingsForm" class="form-grid"><label>Age<input id="settingAge" type="number" min="16" max="100"></label><label>Sex used for BMR<select id="settingSex"><option value="male">Male</option><option value="female">Female</option></select></label><label>Height (cm)<input id="settingHeight" type="number" min="100" max="230" step="0.1"></label><label>Current weight (kg)<input id="settingWeight" type="number" min="30" max="300" step="0.1"></label><label>Goal weight (kg)<input id="settingGoal" type="number" min="30" max="300" step="0.1"></label><label>Activity multiplier<select id="settingActivity"><option value="1.2">Sedentary (1.2)</option><option value="1.375">Light (1.375)</option><option value="1.55">Moderate (1.55)</option><option value="1.725">Very active (1.725)</option></select></label><label>Daily calories<input id="settingCalories" type="number" min="1200" max="5000"></label><label>Protein target (g)<input id="settingProtein" type="number" min="50" max="300"></label><label>Carbs target (g)<input id="settingCarbs" type="number" min="50" max="500"></label><label>Fat target (g)<input id="settingFat" type="number" min="30" max="200"></label><button class="primary-button full" type="submit">Save my targets</button></form><div class="estimate-box" id="tdeeEstimate"></div></article><article class="panel"><div class="panel-heading"><div><p class="eyebrow">DATA & PRIVACY</p><h3>Your records</h3></div></div><p class="muted">Your tracker records sync to your private Supabase account. A local browser copy is also kept for resilience. Export a JSON backup periodically.</p><button class="secondary-button full-width" id="settingsExport">⇩ Export backup (JSON)</button><label class="import-label">Import backup (JSON)<input type="file" id="importFile" accept="application/json"></label><button class="danger-button full-width" id="clearData">Clear all tracker data</button><p class="fine-print">The calorie and macro targets are starting estimates, not medical advice. Adjust based on your 2–3 week weight trend, energy and workout recovery.</p></article></div>
+      </section>
+      <footer>FITTRACK · Built for consistency, not perfection.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
