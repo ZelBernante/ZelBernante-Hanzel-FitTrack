@@ -15,3 +15,6 @@
 @media(max-width:560px){.daily-exercise-row{grid-template-columns:1fr 1fr}.daily-exercise-row label:first-of-type{grid-column:1}.daily-exercise-row label:nth-of-type(2){grid-column:2}.daily-exercise-row label:nth-of-type(3){grid-column:1}.log-exercise-button{grid-column:2;grid-row:3}.exercise-log-count{grid-column:1/-1;grid-row:4}.workout-metrics,.calorie-estimate-panel{grid-template-columns:1fr}.nutrition-fields .form-grid{grid-template-columns:1fr}}
 
 .workout-overview-grid{grid-template-columns:1.1fr 1fr .85fr}.biceps-volume-card strong{color:#2eaa78}@media(max-width:850px){.workout-overview-grid{grid-template-columns:1fr}}
+
+/* Private OTP sign-in and administrator account controls */
+.auth-card label[hidden],.admin-panel[hidden]{display:none!important}.auth-card input#authOtp{font-size:22px;letter-spacing:.45em;text-align:center;font-weight:800}.admin-panel{grid-column:1/-1}.admin-create-form{margin-top:18px}.admin-create-form label{display:flex;flex-direction:column}.admin-panel .ai-status{margin-top:12px}.admin-panel .ai-status.success{color:var(--green)}
