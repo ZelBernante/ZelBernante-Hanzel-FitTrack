@@ -27,15 +27,14 @@ Deno.serve(async (req: Request) => {
     if (authError || !user) return Response.json({ error: "Your session is invalid. Please sign in again." }, { status: 401, headers: corsHeaders });
 
     const body = await req.json();
-    const food = String(body.food || "").trim().slice(0, 180);
-    const portion = String(body.portion || "").trim().slice(0, 120);
-    if (!food || !portion) return Response.json({ error: "Food name and portion are required." }, { status: 400, headers: corsHeaders });
+    const foodText = String(body.text || "").trim().slice(0, 2000);
+    if (!foodText) return Response.json({ error: "Enter the foods and portions you ate." }, { status: 400, headers: corsHeaders });
 
     const geminiKey = Deno.env.get("GEMINI_API_KEY");
     if (!geminiKey) return Response.json({ error: "GEMINI_API_KEY is not configured in Supabase Edge Function secrets." }, { status: 503, headers: corsHeaders });
 
-    const prompt = `Estimate nutrition for this exact food and portion. Food: "${food}". Portion: "${portion}". Return ONLY valid JSON with keys calories, protein_g, carbs_g, fat_g, assumptions. calories must be a non-negative integer; macros must be non-negative numbers in grams. Estimate the total nutrition for the entire portion described, not per 100g unless the portion says 100g. Use realistic recipe assumptions for Filipino dishes when relevant. If the recipe or portion is ambiguous, state the uncertainty in assumptions. Do not invent a product label or claim exactness.`;
-    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + encodeURIComponent(geminiKey), {
+    const prompt = `Analyze this food diary. Split every distinct food/drink and quantity into a separate item. Text: "${foodText}". Return ONLY valid JSON in this exact shape: {"items":[{"name":"food name","portion":"quantity and serving size","calories":0,"protein_g":0,"carbs_g":0,"fat_g":0,"assumptions":"brief estimate note"}]}. Estimate total nutrition for each stated portion, not per 100g. Recognize Filipino foods and local packaged drinks when possible. Do not combine separate foods into one item. If a quantity is missing, make a conservative one-serving assumption and explain it. Use non-negative numbers. Do not claim exactness or invent verified package-label data.`;
+    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=" + encodeURIComponent(geminiKey), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -46,18 +45,23 @@ Deno.serve(async (req: Request) => {
     const result = await response.json();
     if (!response.ok) {
       console.error("Gemini API error", result);
-      return Response.json({ error: "Nutrition AI is temporarily unavailable. Try again later." }, { status: 502, headers: corsHeaders });
+      return Response.json({ error: result.error?.message || "Nutrition AI is temporarily unavailable." }, { status: 502, headers: corsHeaders });
     }
     const raw = result.candidates?.[0]?.content?.parts?.map((part: {text?: string}) => part.text || "").join("") || "";
     const parsed = JSON.parse(raw);
-    const nutrition = {
-      calories: Math.max(0, Math.round(Number(parsed.calories) || 0)),
-      protein_g: Math.max(0, Number(parsed.protein_g) || 0),
-      carbs_g: Math.max(0, Number(parsed.carbs_g) || 0),
-      fat_g: Math.max(0, Number(parsed.fat_g) || 0),
-      assumptions: String(parsed.assumptions || "AI estimate; recipe and portion can change the actual values.").slice(0, 500),
-    };
-    return Response.json({ nutrition }, { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (!Array.isArray(parsed.items) || !parsed.items.length) {
+      return Response.json({ error: "AI did not return a list of food items. Please rephrase your food diary." }, { status: 502, headers: corsHeaders });
+    }
+    const items = parsed.items.slice(0, 30).map((item: Record<string, unknown>) => ({
+      name: String(item.name || "Food").slice(0, 120),
+      portion: String(item.portion || "1 serving").slice(0, 100),
+      calories: Math.max(0, Math.round(Number(item.calories) || 0)),
+      protein_g: Math.max(0, Number(item.protein_g) || 0),
+      carbs_g: Math.max(0, Number(item.carbs_g) || 0),
+      fat_g: Math.max(0, Number(item.fat_g) || 0),
+      assumptions: String(item.assumptions || "AI estimate; actual nutrition may vary.").slice(0, 300),
+    }));
+    return Response.json({ items }, { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (error) {
     console.error("estimate-food error", error);
     return Response.json({ error: "Could not estimate this food. Please retry." }, { status: 500, headers: corsHeaders });
