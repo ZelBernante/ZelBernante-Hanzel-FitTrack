@@ -28,7 +28,15 @@ Deno.serve(async (req: Request) => {
 
     const body = await req.json();
     const workoutText = String(body.text || "").trim().slice(0, 3000);
-    if (!workoutText) return Response.json({ error: "Describe the workout you completed." }, { status: 400, headers: corsHeaders });
+    const references = Array.isArray(body.exercise_references) ? body.exercise_references.slice(0, 15).map((item: Record<string, unknown>) => ({
+      exercise: String(item.exercise || "Exercise").slice(0, 100),
+      group: String(item.group || "GENERAL").slice(0, 40),
+      unit: item.unit === "seconds" ? "seconds" : "reps",
+      sets: item.sets == null ? null : Math.min(20, Math.max(0, Math.round(Number(item.sets) || 0))),
+      reps: item.reps == null ? null : Math.min(300, Math.max(0, Math.round(Number(item.reps) || 0))),
+      weight_kg: item.weight_kg == null ? null : Math.min(300, Math.max(0, Number(item.weight_kg) || 0)),
+    })) : [];
+    if (!workoutText && !references.length) return Response.json({ error: "Enter workout notes or fill in an exercise reference." }, { status: 400, headers: corsHeaders });
 
     const duration = Math.min(300, Math.max(0, Number(body.duration_minutes) || 0));
     const steps = Math.min(100000, Math.max(0, Math.round(Number(body.steps) || 0)));
@@ -47,8 +55,11 @@ Deno.serve(async (req: Request) => {
 
     const prompt = `You are a careful fitness workout logger. Convert the user's natural-language workout note into a structured session. Do not invent exercises or claim measurements are exact.
 
-USER'S WORKOUT NOTE:
-${workoutText}
+USER'S WORKOUT NOTE (may be empty):
+${workoutText || "(No free-text workout note supplied.)"}
+
+EXERCISE REFERENCE ENTRIES (these are user-entered completed-workout data, not merely suggestions):
+${JSON.stringify(references)}
 
 SESSION DATA:
 - Workout duration: ${duration} minutes
@@ -59,10 +70,16 @@ USUAL ROUTINE WITH EDITABLE DEFAULT VALUES (use these as fallbacks for routine e
 ${JSON.stringify(defaults)}
 
 INSTRUCTIONS:
-- Return the exercises the user says they completed. The usual routine is a reference; do not include an exercise the user explicitly says they skipped or did not do.
-- If the note describes a general completed routine but does not name each movement, use the provided routine defaults as the completed routine.
-- Match names to the supplied routine where possible. If an exercise is mentioned that is not in the routine, include it too, up to 15 total.
-- Explicit values in the note override defaults. Otherwise use the supplied default sets, reps/seconds and weight.
+- BOTH input sources are valid workout data. The free-text note and exercise reference entries must be merged, not treated as alternatives.
+- Include every exercise explicitly described in the note AND every exercise in EXERCISE REFERENCE ENTRIES. Deduplicate matching exercise names (case-insensitive and common spelling variants); merge their values into one exercise record.
+- If an exercise appears in both sources, explicit numbers in the free-text note take precedence; use reference values for any fields the note does not specify.
+- If the note is empty, build the session entirely from the supplied exercise reference entries.
+- If there are no reference entries, build the session entirely from the free-text note; infer the exercises actually named or clearly described, and do not add the whole routine by default.
+- Only use USUAL ROUTINE defaults as a fallback for missing values on an exercise already included in the completed session. Never add an exercise solely because it exists in the usual routine.
+- For a text-only note that describes a complete workout generally (e.g. "did my usual routine"), use the supplied routine defaults as the completed routine.
+- If an exercise is mentioned that is not in the routine, include it too, up to 15 total.
+- Explicit values in the note override reference values; reference values override usual routine defaults. If a reference field is null, use the usual routine default for that exercise.
+- A reference entry with all values missing should not be treated as meaningful data; only include it if the exercise is clearly described in the note.
 - For Push-ups and Planks, weight_kg MUST equal the current body weight (${bodyWeight} kg), and unit is "reps" for push-ups and "seconds" for planks. These are bodyweight movements.
 - For planks, reps means hold duration in seconds and unit must be "seconds".
 - Keep all counts and weights non-negative. Do not convert a missing weight into a guessed dumbbell weight; use the provided default.
