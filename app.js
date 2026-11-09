@@ -61,3 +61,4 @@ $('clearData').onclick=()=>{if(confirm('Delete all food, workout and weight reco
 $('authForm').onsubmit=async e=>{e.preventDefault();await signInWithAccessCode()};$('adminCreateUserForm').onsubmit=createManagedAccount;$('ownAccessCodeForm').onsubmit=updateOwnAccessCode;
 $('signOutBtn').onclick=async()=>{if(confirm('Sign out of Hanzel FitTrack?')){await syncCloud();await supabaseClient.auth.signOut()}};
 renderAll();initializeAuth();
+// gym-ai-redesign-in-progress
