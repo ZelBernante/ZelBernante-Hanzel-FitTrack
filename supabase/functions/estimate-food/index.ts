@@ -55,7 +55,7 @@ Return ONLY valid JSON in this exact shape: {"items":[{"name":"food component","
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ role: "user", parts }],
-        generationConfig: { temperature: 0.2, responseMimeType: "application/json" },
+        generationConfig: { responseMimeType: "application/json" },
       }),
     });
     const result = await response.json();
