@@ -9,7 +9,7 @@ A responsive personal fitness tracker with a unified daily nutrition and trainin
 - AI food logging from text or a camera photo, with separate per-food estimates, editable gram portions, confidence notes and review before saving
 - Food quick-add presets for Filipino foods and supplements (estimates)
 - Custom food logging, servings and meal categories
-- Four-day upper/lower dumbbell workout split with set, rep and weight logging
+- Biceps-focused full-body workout journal with set, rep and weight logging
 - Weight check-ins, weight trend chart, nutrition trends and selectable 7/30/90-day analytics
 - Editable profile, calorie and macro targets with BMR/TDEE estimate
 - Supabase email/password authentication and private cloud sync
