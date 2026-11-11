@@ -4,7 +4,7 @@ A responsive personal food and workout tracker with Supabase authentication and 
 
 ## Features
 - Daily calorie, protein, carbohydrate and fat tracking
-- AI food logging from text or a camera photo, with calories and macro estimates shown for review before saving
+- AI food logging from text or a camera photo, with separate per-food estimates, editable gram portions, confidence notes and review before saving
 - Food quick-add presets for Filipino foods and supplements (estimates)
 - Custom food logging, servings and meal categories
 - Four-day upper/lower dumbbell workout split with set, rep and weight logging
@@ -23,7 +23,7 @@ The app stores the existing tracker state as JSONB in each user's `profiles.trac
 
 
 ## AI food nutrition estimates
-The food tracker uses a Supabase Edge Function named `estimate-food` to call Google's Gemini Flash-Lite API. It supports both text-based food logs and photo-based food identification. Photo scans return an estimate for the visible serving and show calories, protein, carbs and fat before the user chooses to add the item to the daily journal. The Gemini API key is stored server-side as the `GEMINI_API_KEY` Edge Function secret and is never placed in the website JavaScript.
+The food tracker uses a Supabase Edge Function named `estimate-food` to call Google's Gemini Flash-Lite API. It supports both text-based food logs and photo-based food identification. Photo scans identify visible components separately, estimate edible grams and macros per component, show confidence and uncertainty, and allow gram adjustments before the user adds each item to the daily journal. Photos cannot establish exact weight without a known size reference; the scanner exposes this uncertainty and accepts an optional plate/object measurement. The Gemini API key is stored server-side as the `GEMINI_API_KEY` Edge Function secret and is never placed in the website JavaScript.
 
 1. Create a Gemini API key at https://aistudio.google.com/apikey.
 2. In Supabase Dashboard > Edge Functions > Secrets, add `GEMINI_API_KEY` with your key.

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5ad35">
   <title>Hanzel FitTrack</title>
-  <link rel="stylesheet" href="styles.css?v=20261111-food-camera">
+  <link rel="stylesheet" href="styles.css?v=20261111-multifood-scan">
 </head>
 <body>
   <section class="auth-screen" id="authScreen" aria-labelledby="authTitle"><form class="auth-card" id="authForm"><div class="brand-mark auth-mark">H</div><p class="eyebrow">PRIVATE FITNESS CLOUD</p><h1 id="authTitle">Welcome back</h1><p class="muted" id="authDescription">Sign in with the email address and six-digit access code provided by your FitTrack administrator.</p><label>Email address<input id="authEmail" type="email" autocomplete="username" placeholder="you@example.com" required></label><label>6-digit access code<input id="authOtp" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]{6}" minlength="6" maxlength="6" placeholder="••••••" required></label><button class="primary-button auth-submit" id="authSubmit" type="submit">Sign in</button><p class="auth-message" id="authMessage" role="status"></p><small class="fine-print">Private access only. Accounts and access codes are issued by the FitTrack administrator.</small></form></section><div class="app-shell" id="appShell" hidden>
@@ -47,13 +47,18 @@
             <input type="file" id="foodCameraInput" accept="image/*" capture="environment" hidden>
             <button class="secondary-button camera-open-button" type="button" id="openFoodCamera">▣ Scan with camera</button>
             <p class="fine-print">For better estimates, photograph the full serving in good lighting. Estimates are approximate.</p>
+            <label class="scan-reference-field">Portion-size reference (optional)
+              <input id="foodPortionReference" type="text" maxlength="120" placeholder="e.g. 25 cm plate, standard spoon, or 330 ml can">
+              <small>A known plate size or familiar object helps AI estimate grams. Without one, weights are rough visual estimates.</small>
+            </label>
             <div id="foodScanPreview" class="food-scan-preview" hidden><img id="foodScanImage" alt="Food photo preview"><div class="food-scan-preview-actions"><button type="button" class="text-button" id="retakeFoodPhoto">Retake photo</button><button type="button" class="primary-button" id="analyzeFoodPhoto">✦ Analyze photo</button></div></div>
             <p class="ai-status" id="foodScanStatus" role="status" aria-live="polite"></p>
             <div id="foodScanResult" class="food-scan-result" hidden>
-              <div class="scan-result-heading"><div><span class="eyebrow">AI ESTIMATE · REVIEW BEFORE SAVING</span><h4 id="scannedFoodName"></h4><p id="scannedFoodPortion" class="muted"></p></div><strong id="scannedFoodCalories"></strong></div>
+              <div class="scan-result-heading"><div><span class="eyebrow">AI ESTIMATE · REVIEW BEFORE SAVING</span><h4>Detected foods</h4><p class="muted">Each visible component is estimated separately. Review the portions before saving.</p></div><strong id="scannedFoodCalories"></strong></div>
+              <div id="scannedFoodItems" class="scanned-food-items"></div>
               <div class="scan-macros"><div><span>PROTEIN</span><strong id="scannedFoodProtein">0 g</strong></div><div><span>CARBS</span><strong id="scannedFoodCarbs">0 g</strong></div><div><span>FAT</span><strong id="scannedFoodFat">0 g</strong></div></div>
               <p class="fine-print" id="scannedFoodAssumptions"></p>
-              <div class="scan-result-actions"><button type="button" class="secondary-button" id="discardFoodScan">Discard</button><button type="button" class="primary-button" id="addScannedFood">＋ Add to daily journal</button></div>
+              <div class="scan-result-actions"><button type="button" class="secondary-button" id="discardFoodScan">Discard</button><button type="button" class="primary-button" id="addScannedFood">＋ Add all foods to journal</button></div>
             </div>
           </div>
         </article><article class="panel"><div class="panel-heading"><div><p class="eyebrow">DAILY JOURNAL</p><h3>What you ate</h3></div><span class="count-pill" id="foodCount">0 items</span></div><div id="foodLog" class="food-log empty-state">Nothing logged for this date yet.</div></article></div>
@@ -85,6 +90,6 @@
   </div>
   <div class="toast" id="toast" role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261111-food-camera"></script>
+  <script src="app.js?v=20261111-multifood-scan"></script>
 </body>
 </html>
