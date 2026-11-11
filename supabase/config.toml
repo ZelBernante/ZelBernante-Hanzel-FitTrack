@@ -1,0 +1,4 @@
+project_id = "hanzel-fittrack"
+
+[functions.estimate-food]
+verify_jwt = true
