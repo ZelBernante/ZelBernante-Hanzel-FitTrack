@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5ad35">
   <title>Hanzel FitTrack</title>
-  <link rel="stylesheet" href="styles.css?v=20261109-gym-merge">
+  <link rel="stylesheet" href="styles.css?v=20261111-food-camera">
 </head>
 <body>
   <section class="auth-screen" id="authScreen" aria-labelledby="authTitle"><form class="auth-card" id="authForm"><div class="brand-mark auth-mark">H</div><p class="eyebrow">PRIVATE FITNESS CLOUD</p><h1 id="authTitle">Welcome back</h1><p class="muted" id="authDescription">Sign in with the email address and six-digit access code provided by your FitTrack administrator.</p><label>Email address<input id="authEmail" type="email" autocomplete="username" placeholder="you@example.com" required></label><label>6-digit access code<input id="authOtp" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]{6}" minlength="6" maxlength="6" placeholder="••••••" required></label><button class="primary-button auth-submit" id="authSubmit" type="submit">Sign in</button><p class="auth-message" id="authMessage" role="status"></p><small class="fine-print">Private access only. Accounts and access codes are issued by the FitTrack administrator.</small></form></section><div class="app-shell" id="appShell" hidden>
@@ -42,6 +42,20 @@
         <div class="stats-grid compact-stats"><article class="stat-card"><span class="muted">Calories eaten</span><strong id="foodCalories">0 kcal</strong><small id="foodCalSub">of 2,300 kcal</small></article><article class="stat-card"><span class="muted">Protein</span><strong id="foodProtein">0 g</strong><small>Target 180 g</small></article><article class="stat-card"><span class="muted">Carbs</span><strong id="foodCarbs">0 g</strong><small>Target 235 g</small></article><article class="stat-card"><span class="muted">Fat</span><strong id="foodFat">0 g</strong><small>Target 71 g</small></article></div>
         <div class="content-grid food-grid"><article class="panel"><div class="panel-heading"><div><p class="eyebrow">ADD TO YOUR DAY</p><h3>Log a food</h3></div></div>
           <form id="foodForm" class="form-grid ai-food-form"><label class="full">What did you eat today?<textarea id="foodName" rows="5" placeholder="e.g. 1 cup of rice, 2 cups of adobong intestine, 4 pieces of apple turnover bread, 1 Kopiko coffee" required></textarea></label><button class="primary-button full" type="button" id="estimateFood"><span>✦</span> Analyze &amp; log all foods</button><p class="ai-status full" id="foodAiStatus" role="status">List everything you ate in one message. AI will separate each food and estimate its calories and macros.</p></form>
+          <div class="food-camera-panel">
+            <div class="food-camera-copy"><span class="eyebrow">AI FOOD SCANNER</span><h4>Scan your meal</h4><p class="muted">Take a photo of your food. AI will estimate its calories and macros before you decide to save it.</p></div>
+            <input type="file" id="foodCameraInput" accept="image/*" capture="environment" hidden>
+            <button class="secondary-button camera-open-button" type="button" id="openFoodCamera">▣ Scan with camera</button>
+            <p class="fine-print">For better estimates, photograph the full serving in good lighting. Estimates are approximate.</p>
+            <div id="foodScanPreview" class="food-scan-preview" hidden><img id="foodScanImage" alt="Food photo preview"><div class="food-scan-preview-actions"><button type="button" class="text-button" id="retakeFoodPhoto">Retake photo</button><button type="button" class="primary-button" id="analyzeFoodPhoto">✦ Analyze photo</button></div></div>
+            <p class="ai-status" id="foodScanStatus" role="status" aria-live="polite"></p>
+            <div id="foodScanResult" class="food-scan-result" hidden>
+              <div class="scan-result-heading"><div><span class="eyebrow">AI ESTIMATE · REVIEW BEFORE SAVING</span><h4 id="scannedFoodName"></h4><p id="scannedFoodPortion" class="muted"></p></div><strong id="scannedFoodCalories"></strong></div>
+              <div class="scan-macros"><div><span>PROTEIN</span><strong id="scannedFoodProtein">0 g</strong></div><div><span>CARBS</span><strong id="scannedFoodCarbs">0 g</strong></div><div><span>FAT</span><strong id="scannedFoodFat">0 g</strong></div></div>
+              <p class="fine-print" id="scannedFoodAssumptions"></p>
+              <div class="scan-result-actions"><button type="button" class="secondary-button" id="discardFoodScan">Discard</button><button type="button" class="primary-button" id="addScannedFood">＋ Add to daily journal</button></div>
+            </div>
+          </div>
         </article><article class="panel"><div class="panel-heading"><div><p class="eyebrow">DAILY JOURNAL</p><h3>What you ate</h3></div><span class="count-pill" id="foodCount">0 items</span></div><div id="foodLog" class="food-log empty-state">Nothing logged for this date yet.</div></article></div>
       </section>
       <section class="page" id="page-workout">
@@ -71,6 +85,6 @@
   </div>
   <div class="toast" id="toast" role="status"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261110-zero-filter"></script>
+  <script src="app.js?v=20261111-food-camera"></script>
 </body>
 </html>
