@@ -1,14 +1,16 @@
 # Hanzel FitTrack
 
-A responsive personal food and workout tracker with Supabase authentication and cloud sync.
+A responsive personal fitness tracker with a unified daily nutrition and training workspace, Supabase authentication and per-account cloud sync.
 
 ## Features
+- Unified Daily Tracker for food and workout logging with a shared date selector and quick-entry tabs
+- Responsive mobile navigation, account-aware profile identity and editable display name
 - Daily calorie, protein, carbohydrate and fat tracking
 - AI food logging from text or a camera photo, with separate per-food estimates, editable gram portions, confidence notes and review before saving
 - Food quick-add presets for Filipino foods and supplements (estimates)
 - Custom food logging, servings and meal categories
-- Four-day upper/lower dumbbell workout split with set, rep and weight logging
-- Weight check-ins and a weight trend chart
+- Biceps-focused full-body workout journal with set, rep and weight logging
+- Weight check-ins, weight trend chart, nutrition trends and selectable 7/30/90-day analytics
 - Editable profile, calorie and macro targets with BMR/TDEE estimate
 - Supabase email/password authentication and private cloud sync
 - Local browser cache and JSON export/import backup
