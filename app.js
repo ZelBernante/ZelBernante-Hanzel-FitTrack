@@ -7,7 +7,7 @@ const defaults={profile:{age:23,sex:'male',height:175.3,weight:95,goal:85,activi
 let state=loadState();
 const $=id=>document.getElementById(id),today=()=>new Date().toISOString().slice(0,10);
 function loadState(){try{return {...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return structuredClone(defaults)}}
-function save(){localStorage.setItem(currentUser?KEY+':'+currentUser.id:KEY,JSON.stringify(state));renderDashboard();if(currentUser&&cloudReady){clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(syncCloud,700)}}
+function save(){localStorage.setItem(currentUser?KEY+':'+currentUser.id:KEY,JSON.stringify(state));renderDashboard();renderDailySnapshot();if(currentUser&&cloudReady){clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(syncCloud,700)}}
 function setSyncStatus(message,isError=false){const el=$('syncStatus');if(el){el.textContent=message;el.style.color=isError?'#b34d46':''}}
 async function syncCloud(){if(!currentUser||!cloudReady)return;setSyncStatus('Syncing your data…');const {error}=await supabaseClient.from('profiles').upsert({id:currentUser.id,tracker_data:state},{onConflict:'id'});if(error){console.error('FitTrack cloud sync failed:',error);setSyncStatus('Cloud sync needs attention',true);notify('Cloud save failed. Your local copy is safe.')}else setSyncStatus('Synced to your private cloud')}
 function getAccountDisplayName(user=currentUser){const meta=user?.user_metadata||{};const value=meta.display_name||meta.username||meta.full_name||meta.name||user?.email?.split('@')[0]||'Your account';return String(value).trim().slice(0,40)||'Your account'}
