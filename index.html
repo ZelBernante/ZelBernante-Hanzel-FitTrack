@@ -47,13 +47,18 @@
             <input type="file" id="foodCameraInput" accept="image/*" capture="environment" hidden>
             <button class="secondary-button camera-open-button" type="button" id="openFoodCamera">▣ Scan with camera</button>
             <p class="fine-print">For better estimates, photograph the full serving in good lighting. Estimates are approximate.</p>
+            <label class="scan-reference-field">Portion-size reference (optional)
+              <input id="foodPortionReference" type="text" maxlength="120" placeholder="e.g. 25 cm plate, standard spoon, or 330 ml can">
+              <small>A known plate size or familiar object helps AI estimate grams. Without one, weights are rough visual estimates.</small>
+            </label>
             <div id="foodScanPreview" class="food-scan-preview" hidden><img id="foodScanImage" alt="Food photo preview"><div class="food-scan-preview-actions"><button type="button" class="text-button" id="retakeFoodPhoto">Retake photo</button><button type="button" class="primary-button" id="analyzeFoodPhoto">✦ Analyze photo</button></div></div>
             <p class="ai-status" id="foodScanStatus" role="status" aria-live="polite"></p>
             <div id="foodScanResult" class="food-scan-result" hidden>
-              <div class="scan-result-heading"><div><span class="eyebrow">AI ESTIMATE · REVIEW BEFORE SAVING</span><h4 id="scannedFoodName"></h4><p id="scannedFoodPortion" class="muted"></p></div><strong id="scannedFoodCalories"></strong></div>
+              <div class="scan-result-heading"><div><span class="eyebrow">AI ESTIMATE · REVIEW BEFORE SAVING</span><h4>Detected foods</h4><p class="muted">Each visible component is estimated separately. Review the portions before saving.</p></div><strong id="scannedFoodCalories"></strong></div>
+              <div id="scannedFoodItems" class="scanned-food-items"></div>
               <div class="scan-macros"><div><span>PROTEIN</span><strong id="scannedFoodProtein">0 g</strong></div><div><span>CARBS</span><strong id="scannedFoodCarbs">0 g</strong></div><div><span>FAT</span><strong id="scannedFoodFat">0 g</strong></div></div>
               <p class="fine-print" id="scannedFoodAssumptions"></p>
-              <div class="scan-result-actions"><button type="button" class="secondary-button" id="discardFoodScan">Discard</button><button type="button" class="primary-button" id="addScannedFood">＋ Add to daily journal</button></div>
+              <div class="scan-result-actions"><button type="button" class="secondary-button" id="discardFoodScan">Discard</button><button type="button" class="primary-button" id="addScannedFood">＋ Add all foods to journal</button></div>
             </div>
           </div>
         </article><article class="panel"><div class="panel-heading"><div><p class="eyebrow">DAILY JOURNAL</p><h3>What you ate</h3></div><span class="count-pill" id="foodCount">0 items</span></div><div id="foodLog" class="food-log empty-state">Nothing logged for this date yet.</div></article></div>
